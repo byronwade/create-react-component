@@ -1,19 +1,18 @@
 {
   "name": "create-react-component",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "CLI for creating new React components",
-  "homepage": "https://github.com/joshwcomeau/new-component",
+  "homepage": "https://github.com/byronwade/create-react-component",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshwcomeau/new-component"
+    "url": "https://github.com/byronwade/create-react-component"
   },
   "bugs": {
-    "url": "https://github.com/joshwcomeau/new-component/issues"
+    "url": "https://github.com/byronwade/create-react-component/issues"
   },
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "component": "./src/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "react",
@@ -22,8 +21,7 @@
     "component",
     "boilerplate"
   ],
-  "author": "Joshua Comeau",
-  "license": "MIT",
+  "author": "Byron Wade (Forked from Joshua Comeau)",
   "bin": {
     "create-react-component": "./src/index.js"
   },
