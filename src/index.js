@@ -60,10 +60,44 @@ const templatePath = `./templates/${program.type}.js`;
 const componentDir = `${program.dir}/${componentName}`;
 const filePath = `${componentDir}/${componentName}.${program.extension}`;
 const indexPath = `${componentDir}/index.js`;
+const lazyPath = `${componentDir}/${componentName}.lazy.js`;
+const styledPath = `${componentDir}/${componentName}.styled.js`;
+const storyPath = `${componentDir}/${componentName}.story.js`;
 
 // Our index template is super straightforward, so we'll just inline it for now.
 const indexTemplate = prettify(`\
 export { default } from './${componentName}';
+`);
+
+
+const lazyTemplate = prettify(`\
+import React, { lazy, Suspense } from 'react';
+
+const Lazy${componentName} = lazy(() => import('./${componentName}'));
+
+const ${componentName} = props => (
+  <Suspense fallback={null}>
+    <Lazy${componentName} {...props} />
+  </Suspense>
+);
+
+export default ${componentName};
+`);
+
+
+const styledTemplate = prettify(`\
+export const Width = styled.div\`
+    width: 100%;
+\`
+`);
+
+const storyTemplate = prettify(`\
+/* eslint-disable */
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import ${componentName} from './${componentName}';
+
+storiesOf('${componentName}', module).add('default', () => <${componentName} />);
 `);
 
 logIntro({ name: componentName, dir: componentDir, type: program.type });
@@ -119,6 +153,30 @@ mkDirPromise(componentDir)
   )
   .then((template) => {
     logItemCompletion('Index file built and saved to disk.');
+    return template;
+  })
+  .then((template) =>
+    // We also need the `index.js` file, which allows easy importing.
+    writeFilePromise(lazyPath, prettify(lazyTemplate))
+  )
+  .then((template) => {
+    logItemCompletion('Lazy file built and saved to disk.');
+    return template;
+  })
+  .then((template) =>
+    // We also need the `index.js` file, which allows easy importing.
+    writeFilePromise(styledPath, prettify(styledTemplate))
+  )
+  .then((template) => {
+    logItemCompletion('Styled-Components file built and saved to disk.');
+    return template;
+  })
+  .then((template) =>
+    // We also need the `index.js` file, which allows easy importing.
+    writeFilePromise(storyPath, prettify(storyTemplate))
+  )
+  .then((template) => {
+    logItemCompletion('Story file built and saved to disk.');
     return template;
   })
   .then((template) => {
