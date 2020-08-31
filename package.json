@@ -23,7 +23,7 @@
   ],
   "author": "Byron Wade (Forked from Joshua Comeau)",
   "bin": {
-    "create-react-component": "./src/index.js"
+    "create-component": "./src/index.js"
   },
   "dependencies": {
     "chalk": "^2.4.1",

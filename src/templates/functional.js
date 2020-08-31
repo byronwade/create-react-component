@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Container } from './COMPONENT_NAME.styled'
+import styles from "./COMPONENT_NAME.module.css";
 
 const COMPONENT_NAME = () => (
-  <div>
-    COMPONENT_NAME Component
-  </div>
+  <Container>
+    <div className={`styles.div`}>
+      COMPONENT_NAME Component
+    </div>
+  </Container>
 );
 
 COMPONENT_NAME.propTypes = {};

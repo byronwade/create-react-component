@@ -63,6 +63,7 @@ const indexPath = `${componentDir}/index.js`;
 const lazyPath = `${componentDir}/${componentName}.lazy.js`;
 const styledPath = `${componentDir}/${componentName}.styled.js`;
 const storyPath = `${componentDir}/${componentName}.story.js`;
+const modulePath = `${componentDir}/${componentName}.module.css`;
 
 // Our index template is super straightforward, so we'll just inline it for now.
 const indexTemplate = prettify(`\
@@ -86,7 +87,7 @@ export default ${componentName};
 
 
 const styledTemplate = prettify(`\
-export const Width = styled.div\`
+export const Container = styled.div\`
     width: 100%;
 \`
 `);
@@ -98,6 +99,14 @@ import { storiesOf } from '@storybook/react';
 import ${componentName} from './${componentName}';
 
 storiesOf('${componentName}', module).add('default', () => <${componentName} />);
+`);
+
+const moduleTemplate = prettify(`\
+/*
+regular css goes in here
+cannot use dashes or underscores, use pascel case
+add css here 
+*/
 `);
 
 logIntro({ name: componentName, dir: componentDir, type: program.type });
@@ -177,6 +186,14 @@ mkDirPromise(componentDir)
   )
   .then((template) => {
     logItemCompletion('Story file built and saved to disk.');
+    return template;
+  })
+  .then((template) =>
+    // We also need the `index.js` file, which allows easy importing.
+    writeFilePromise(modulePath, prettify(moduleTemplate))
+  )
+  .then((template) => {
+    logItemCompletion('CSS Module file built and saved to disk.');
     return template;
   })
   .then((template) => {
